@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `notification_log` ADD COLUMN `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3);

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `tour_guide_doc` MODIFY `doc_link` VARCHAR(191) NULL,
+    MODIFY `doc_type` ENUM('CID', 'SPECIAL_RESIDENT_PERMIT', 'WORK_PERMIT', 'PASSPORT', 'ANY_DOC', 'LIVENESS') NULL;

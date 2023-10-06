@@ -1,0 +1,48 @@
+export const COMMON_CONSTANT = {
+  OTP_HEADERS: {
+    CODE: 'otp-code',
+    ACTION: 'otp-action',
+  },
+  REDIS_DEFAULT_NAMESPACE: 'redisDefault',
+  NOTIFY_FORMAT_TIME: 'HH:mm - MMM DD, YYYY',
+
+};
+
+export enum CONFIGURATION_CODE_CONSTANT {
+  VENDOR_SYSTEM_PRICE = 'VENDOR_SYSTEM_PRICE',
+  TOUR_SYSTEM_PRICE = 'TOUR_SYSTEM_PRICE',   // constant money sys get per tour booking
+  VENDOR_SYSTEM_COMMISSION = 'VENDOR_SYSTEM_COMMISSION',
+  TOUR_SYSTEM_COMMISSION = 'TOUR_SYSTEM_COMMISSION', // total percent sys and tour guide get from cost of tour booking
+  TIME_PAYMENT_REFUND = 'TIME_PAYMENT_REFUND',
+  TIME_PAYMENT_EXPIRED = 'TIME_PAYMENT_EXPIRED',
+  TIME_TOUR_CANCEL = 'TIME_TOUR_CANCEL',
+  TIME_VENDOR_CANCEL = 'TIME_VENDOR_CANCEL',
+};
+
+export enum PAYMENT_TYPE {
+  TOUR_BOOKING = 'TOUR_BOOKING',
+  RESERVATION_BOOKING = 'RESERVATION_BOOKING',
+};
+
+export enum FORMAT_DATE {
+  DATE_TIME = 'YYYY-MM-DD HH:mm:ss',
+  DATE = 'YYYY-MM-DD',
+  TIME = 'HH:mm:ss'
+}
+
+export enum ISO_WEEK_DAY {
+  MONDAY = 1,
+  TUESDAY = 2,
+  WEDNESDAY = 3,
+  THURSDAY = 4,
+  FRIDAY = 5,
+  SATURDAY = 6,
+  SUNDAY = 7,
+}
+
+export enum Filter_Time {
+  THIS_MONTH = 'THIS_MONTH',
+  BY_WEEK = 'BY_WEEK',
+  BY_MONTH = 'BY_MONTH',
+  BY_QUARTER_YEAR = 'BY_QUARTER_YEAR',
+}
