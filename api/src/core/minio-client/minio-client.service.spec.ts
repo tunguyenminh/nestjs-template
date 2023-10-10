@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MinioClientService } from './minio-client.service.';
+import { MinioClientService } from './minio-client.service';
 
 describe('MinioClientService', () => {
   let service: MinioClientService;

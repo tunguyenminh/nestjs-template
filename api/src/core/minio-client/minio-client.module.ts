@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
-import { MinioClientService } from './minio-client.service.';
-import { MinioModule } from 'nestjs-minio-client';
+import { Module, forwardRef } from '@nestjs/common';
+import { MinioClientService } from './minio-client.service';
+import { MinioModule, MinioService } from 'nestjs-minio-client';
 import { BackendConfigService } from 'src/services/backend-config.service';
 
 @Module({
