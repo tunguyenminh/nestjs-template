@@ -1,6 +1,6 @@
 version: "3.9.1"
 services:
-  mongo:
+  mongo-db:
     image: mongo
     ports:
       - 30001:27017
@@ -8,16 +8,28 @@ services:
       - 27017
 
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_DATABASE: MONGO_INITDB_DATABASE
-
     volumes:
-      - ${PROJECT_DIR}/gotu-database/data:/data/db
+      - ${PROJECT_DIR}/database:/data/db
+
+  db-admin:
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - "30000:8081"
+    depends_on:
+      - mongo-db
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: ${ME_CONFIG_BASICAUTH_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${ME_CONFIG_BASICAUTH_PASSWORD}
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      ME_CONFIG_MONGODB_SERVER: mongo-db
 
   redis:
     image: redis:latest
-    profiles: [ "backend" ]
     restart: always
     ports:
       - "6379:6379"
@@ -25,17 +37,37 @@ services:
       - ./cache:/data
 
   backend-service:
-    profiles: [ "backend" ]
     build:
       context: ./api
       dockerfile: Dockerfile
       #      target: prod
       target: dev # dev environment
     ports:
-      - "5000:8686"
-    restart: always
-    env_file:
-      - .env
+      - "8687:8686"
+    # restart: always
+
+    environment:
+      PORT: 8686
+      MONGODB_URI: mongodb://mongo-db:27017/call_platform
+      AUTH_SALT_ROUND: 10
+      AUTH_JWT_ACCESS_SECRET: bdf8061c8bb12486dc006e7f358c85cfacfc476ecc26e43ace6fca7a9fa9dd2a
+      AUTH_ADMIN_JWT_ACCESS_EXPIRES_IN: 365d
+      AUTH_JWT_REFRESH_SECRET: b644fdfc52d7eb4bbb5f46105f47baa3d53281526d926bca949ef9190bba0593
+      AUTH_ADMIN_JWT_REFRESH_EXPIRES_IN: 720m
+      OTP_EXPIRED_MINUTES: 10
+      OTP_LENGTH: 4
+      MAIL_HOST: smtp.gmail.com
+      MAIL_PORT: 587
+      MAIL_USERNAME: gotutravel22@gmail.com
+      MAIL_PASSWORD: ypyyausbeacnroal
+      FALLBACK_LANGUAGE: en
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: 123456
+
+    volumes:
+      - ./api:/app
+      - /app/node_modules
 
 volumes:
   backend_service:
