@@ -1,18 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import {
-  Customer,
-  TourGuide,
-  User,
-  UserRole,
-  UserStatus,
-  Vendor,
-} from '@prisma/client';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { _excludeObject, excludeObject } from 'src/utils/common.utils';
 import { BackendConfigService } from '../../services/backend-config.service';
 import { IJwtPayload } from '../interfaces/jwt-payload.interface';
 import { BaseException, Errors } from 'src/constants/error.constant';
+import { UserRole, UserStatus } from 'src/constants/enum.constant';
 
 
 // type UserWithoutPassword = Omit<User, 'password'>;

@@ -36,6 +36,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
+
   // fs.writeFileSync(path.resolve('postman-25-9.json'), JSON.stringify(document));
 
   SwaggerModule.setup('docs', app, document);

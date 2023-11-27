@@ -4,7 +4,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { BackendConfigService } from 'src/services/backend-config.service';
 
 @Module({
-  providers: [NodeMailerService],
+  providers: [NodeMailerService, BackendConfigService],
   imports: [
     MailerModule.forRootAsync({
       inject: [BackendConfigService],

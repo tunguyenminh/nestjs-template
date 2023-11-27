@@ -4,7 +4,8 @@ import moment from 'moment';
 import { COMMON_CONSTANT } from 'src/constants/common.constant';
 import { BackendConfigService } from 'src/services/backend-config.service';
 import { RegexConstant } from 'src/constants/regex.constant';
-import { MediaType } from '@prisma/client';
+import { MediaType } from 'src/constants/enum.constant';
+
 
 const configService = new BackendConfigService(new ConfigService());
 
@@ -110,8 +111,8 @@ export function mimeTypeToMediaType(mimeType: string) {
     return MediaType.IMAGE
   if (mimeType.match(RegexConstant.VideoReg))
     return MediaType.VIDEO
-  if (mimeType.match(RegexConstant.PdfReg))
-    return MediaType.PDF
+  // if (mimeType.match(RegexConstant.PdfReg))
+  //   return MediaType.PDF
 }
 
 export function concatValueInObject(obj) {
@@ -126,4 +127,16 @@ export function concatValueInObject(obj) {
   }
 
   return result;
+}
+
+export function filterTransform(filter: any) {
+  let _filter = {};
+
+  if (filter && Object.keys(filter).length > 0) {
+    for (let key in filter) {
+      _filter[key] = filter[key];
+    }
+  }
+
+  return _filter;
 }

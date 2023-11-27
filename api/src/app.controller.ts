@@ -9,7 +9,6 @@ import {
   getDistricts,
 } from './utils/location.utils';
 import subVn from 'sub-vi';
-import { PrismaService } from 'prisma/prisma.service';
 import phoneCode from 'country-codes-list';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { I18nCustomService } from './i18n/i18n.service';
@@ -17,7 +16,6 @@ import { I18nCustomService } from './i18n/i18n.service';
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly prismaService: PrismaService,
     private readonly i18n: I18nCustomService,
   ) { }
 
@@ -29,16 +27,6 @@ export class AppController {
     const test = await this.i18n.t('common-message.test-fall-back')
     throw new BaseException(Errors.BAD_REQUEST(await this.i18n.t("common-message.test-fall-back")))
     return { message: test };
-  }
-
-  @Get('areas')
-  async getAreas() {
-    try {
-      return this.prismaService.area.findMany({});
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
   }
 
   @Get('province-codes')
@@ -86,8 +74,4 @@ export class AppController {
     }
   }
 
-  @Get('get-vendor-type')
-  async getVendorTypes() {
-    return this.prismaService.vendorType.findMany({});
-  }
 }

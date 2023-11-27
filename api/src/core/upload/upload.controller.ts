@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { MediaType } from '@prisma/client';
 import { RegexConstant } from 'src/constants/regex.constant';
 import { mimeTypeToMediaType } from 'src/utils/common.utils';
 

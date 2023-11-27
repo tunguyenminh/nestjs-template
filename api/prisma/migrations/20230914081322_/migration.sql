@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE `tour_booking` ADD COLUMN `min_price` INTEGER NOT NULL DEFAULT 0,
-    MODIFY `price` INTEGER NOT NULL DEFAULT 0;

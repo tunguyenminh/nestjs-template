@@ -8,12 +8,12 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install --legacy-peer-deps
+RUN yarn
 
 # developer image, build it with `--target dev`
 FROM builder as dev
 
-RUN npm i -g prisma
+RUN npx prisma generate
 
 EXPOSE 9000
 
@@ -41,11 +41,8 @@ COPY --from=prod_builder --chown=node:node /app/node_modules /app/node_modules
 # run script
 COPY --from=prod_builder --chown=node:node /app/run.sh /app/
 
-# prisma files
-COPY --from=prod_builder --chown=node:node /app/prisma /app/prisma
 
 # install prizma CLI, to be able to run migrations
-RUN yarn global add prisma
 
 USER node
 

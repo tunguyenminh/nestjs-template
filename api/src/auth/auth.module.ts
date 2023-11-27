@@ -8,16 +8,16 @@ import { AuthController } from './auth.controller';
 import configurationCommon from 'src/common/configuration.common';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
-import { PrismaModule } from '../../prisma/prisma.module';
+import { UserModule } from 'src/models/user/user.module';
 
 @Module({
   imports: [
     PassportModule,
+    UserModule,
     JwtModule.register({
       secret: configurationCommon().jwt.secret,
       signOptions: { expiresIn: '30d' },
     }),
-    PrismaModule,
 
   ],
   controllers: [AuthController],

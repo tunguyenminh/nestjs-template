@@ -9,12 +9,12 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { User, UserRole } from '@prisma/client';
 import { Observable, TimeoutError, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 // import { ActionAdminService } from 'src/models/action-admin/action-admin.service';
 import { v4 as uuidv4 } from 'uuid';
 import { catchError, timeout } from 'rxjs/operators';
+import { UserRole } from 'src/constants/enum.constant';
 
 export interface Response<T> {
   // data: T;
@@ -37,7 +37,7 @@ export class TransformInterceptor<T>
       map(async (response) => {
         const requestId = uuidv4();
 
-        const user: User = request?.user?.data;
+        const user = request?.user?.data;
         const role: UserRole = user?.userType;
         if (user && role && role === UserRole.ADMIN && method != 'GET') {
           // await this.actionAdminService.create({

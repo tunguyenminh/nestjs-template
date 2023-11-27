@@ -9,8 +9,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { SortOrder } from '../constants/enum.constant';
-import { MediaType } from '@prisma/client';
+import { MediaType, SortOrder } from '../constants/enum.constant';
 
 export class FilterOptions {
   @ApiProperty({
@@ -53,10 +52,10 @@ export class FilterOptions {
   @IsOptional()
   @Transform(({ value }) => {
     switch (value?.trim()) {
-        case "":
-            return undefined
-        default:
-            return value;
+      case "":
+        return undefined
+      default:
+        return value;
     }
   })
   @IsString()

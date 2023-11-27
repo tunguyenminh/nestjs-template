@@ -1,6 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { User, UserRole } from '@prisma/client';
 import { BaseException, Errors } from 'src/constants/error.constant';
 
 @Injectable()

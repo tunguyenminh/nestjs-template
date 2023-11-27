@@ -23,3 +23,26 @@ export enum SocialConnectionType {
   FACEBOOK = 'FACEBOOK',
   APPLE = 'APPLE',
 }
+
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  USER = 'USER'
+}
+
+export enum Gender {
+  MALE = "MALE",
+  FEMALE = "FEMALE"
+}
+
+export enum UserStatus {
+  ACTIVE = 'ACTIVE',
+  DEACTIVE = 'DEACTIVE',
+  BANNED = 'BANNED',
+  DELETED = 'DELETED'
+}
+
+export enum MediaType {
+  VIDEO = "VIDEO",
+  AUDIO = "AUDIO",
+  IMAGE = "IMAGE"
+}
