@@ -30,8 +30,8 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Got you API')
-    .setDescription('Got you API documents.')
+    .setTitle('Call Platform API')
+    .setDescription('Call Platform API documents.')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
