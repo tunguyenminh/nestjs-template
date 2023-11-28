@@ -17,6 +17,8 @@ import { I18nCustomModule } from './i18n/i18n.module';
 import { CommonModule } from './common.module';
 import { DatabaseModule } from './core/database/database.module';
 import { UserModule } from './models/user/user.module';
+import { CallModule } from './models/call/call.module';
+import { CallTypeModule } from './models/call-type/call-type.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { UserModule } from './models/user/user.module';
     CommonModule,
     DatabaseModule,
     UserModule,
+    CallModule,
+    CallTypeModule,
     I18nModule.forRootAsync({
       useFactory: (configService: BackendConfigService) => ({
         fallbackLanguage: configService.getEnv("FALLBACK_LANGUAGE"),

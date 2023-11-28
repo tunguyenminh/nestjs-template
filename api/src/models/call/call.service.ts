@@ -1,26 +1,66 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCallDto } from './dto/create-call.dto';
 import { UpdateCallDto } from './dto/update-call.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { filterTransform } from 'src/utils/common.utils';
+import { UserFilterDto } from '../user/dtos/user-filter.dto';
+import { User, UserDocument } from '../user/user.schema';
+import { Call, CallDocument } from './call.schema';
+import { CallFilterDto } from './dto/call-filter.dto';
+import { PagingDto } from 'src/base/base.model';
+import { CallSortDto } from './dto/call-sort.dto';
+import { CallStatus } from './call.enum';
 
 @Injectable()
 export class CallService {
-  create(createCallDto: CreateCallDto) {
-    return 'This action adds a new call';
+  constructor(
+    @InjectModel(Call.name) private readonly callModel: Model<CallDocument>,
+
+  ) { }
+  async create(args: CallFilterDto) {
+    await this.callModel.create({ ...args })
   }
 
-  findAll() {
-    return `This action returns all call`;
+  async createMany(args: Array<CallFilterDto>) {
+    await this.callModel.insertMany(args)
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} call`;
+  async findOne(filter?: CallFilterDto,) {
+    return this.callModel.findOne({ ...filterTransform(filter) })
   }
 
-  update(id: number, updateCallDto: UpdateCallDto) {
-    return `This action updates a #${id} call`;
+  async countDocument(filter?: CallFilterDto) {
+    return this.callModel.countDocuments({ ...filterTransform(filter) })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} call`;
+  async update(id: string, updateUserDto: any) {
+    const updatedDoc = await this.callModel.findByIdAndUpdate(
+      id,
+      {
+        $set: updateUserDto,
+      },
+      { new: true },
+    );
+    return (updatedDoc && updatedDoc.toObject()) || null;
+  }
+  async query(
+    paging: PagingDto = { page: 1, pageSize: 10 },
+    sort?: CallSortDto,
+    filter?: CallFilterDto,
+  ) {
+    const { page = 1, pageSize = 10 } = paging;
+
+    return (
+      await this.callModel
+        .find({
+          ...filterTransform(filter),
+          status: { $ne: CallStatus.DELETED },
+        })
+        .sort({ ...(sort || { createdAt: -1 }) })
+        .skip((page - 1) * pageSize)
+        .limit(pageSize)
+        .populate('call')
+    ).map((item) => item.toObject());
   }
 }

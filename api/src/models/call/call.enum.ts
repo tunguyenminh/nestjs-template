@@ -1,5 +1,6 @@
 export enum CallStatus {
     PENDING,
     ACCEPTED,
-    REJECTED
+    REJECTED,
+    DELETED
 }

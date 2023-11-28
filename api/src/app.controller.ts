@@ -1,4 +1,4 @@
-import { Controller, Get, Headers, Param } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { BaseException, Errors } from './constants/error.constant';
 import {
@@ -12,10 +12,15 @@ import subVn from 'sub-vi';
 import phoneCode from 'country-codes-list';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { I18nCustomService } from './i18n/i18n.service';
+import { UserService } from './models/user/user.service';
+import { compare, hash } from 'bcryptjs';
+import { CallTypeService } from './models/call-type/call-type.service';
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
+    private readonly userService: UserService,
+    private readonly callTypeService: CallTypeService,
     private readonly i18n: I18nCustomService,
   ) { }
 
@@ -27,6 +32,22 @@ export class AppController {
     const test = await this.i18n.t('common-message.test-fall-back')
     throw new BaseException(Errors.BAD_REQUEST(await this.i18n.t("common-message.test-fall-back")))
     return { message: test };
+  }
+
+  @Post("create-user")
+  async createUser(@Body() createUser: any) {
+    await this.userService.create({
+      ...createUser,
+      password:
+        await hash(
+          "123456",
+          10)
+    })
+  }
+
+  @Post("create-call-type")
+  async createCallType(@Body() args: any) {
+    await this.callTypeService.create(args)
   }
 
   @Get('province-codes')

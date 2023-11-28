@@ -4,3 +4,8 @@ export interface BaseModel {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface PagingDto {
+  readonly page?: number;
+  readonly pageSize?: number;
+}
