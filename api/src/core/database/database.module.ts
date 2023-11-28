@@ -9,10 +9,10 @@ const dbConfig = MongooseModule.forRootAsync({
   useFactory: async (configService: BackendConfigService) => {
     return {
       uri: configService.getEnv('MONGODB_URI'),
-      auth: {
-        username: configService.getEnv('MONGO_USERNAME'),
-        password: configService.getEnv('MONGO_PASSWORD'),
-      }
+      // auth: {
+      //   username: configService.getEnv('MONGO_USERNAME'),
+      //   password: configService.getEnv('MONGO_PASSWORD'),
+      // }
     };
   },
 });
