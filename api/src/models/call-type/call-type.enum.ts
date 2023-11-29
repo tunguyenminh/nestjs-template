@@ -1,5 +1,5 @@
 export enum CallTypeStatus {
-    ACTIVE,
-    INACTIVE,
-    DELETED
+    ACTIVE = 'ACTIVE',
+    INACTIVE = 'INACTIVE',
+    DELETED = 'DELETED'
 }

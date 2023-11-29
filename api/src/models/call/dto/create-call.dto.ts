@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNotEmpty, NotContains } from "class-validator";
+import { IsString, IsNotEmpty, NotContains, IsOptional, IsMongoId } from "class-validator";
 
 export class CreateCallDto {
     @ApiProperty({
@@ -15,7 +15,31 @@ export class CreateCallDto {
     })
     @IsString()
     @IsNotEmpty()
+    @IsMongoId()
     @NotContains(' ')
     readonly type: string;
 
+    @ApiProperty({
+        example: 'objectId',
+    })
+    @IsString()
+    @IsNotEmpty()
+    @NotContains(' ')
+    readonly userEmail: string;
+
+    @ApiProperty({
+        example: 'objectId',
+    })
+    @IsString()
+    @IsNotEmpty()
+    @NotContains(' ')
+    readonly phoneNumber: string;
+
+    @ApiProperty({
+        example: '2022-10-31T09:41:13.415Z',
+        required: false,
+    })
+    @IsString()
+    @IsOptional()
+    readonly appointmentDate?: string;
 }

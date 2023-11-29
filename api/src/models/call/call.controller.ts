@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Put } from '@nestjs/common';
 import { CallService } from './call.service';
 import { CreateCallDto } from './dto/create-call.dto';
-import { UpdateCallDto } from './dto/update-call.dto';
 import { UserRole } from 'src/constants/enum.constant';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -12,6 +11,12 @@ import { BaseException, Errors } from 'src/constants/error.constant';
 import configurationCommon from 'src/common/configuration.common';
 import { CallSortDto } from './dto/call-sort.dto';
 import { CallTypeService } from '../call-type/call-type.service';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { CallQueryDto } from './dto/call-query.dto';
+import { checkValidPhoneAndTransform, generateCustomAlphaBet } from 'src/utils/common.utils';
+import { CallStatus } from './call.enum';
+import { UpdateCallDto } from './dto/update-call.dto';
+
 @ApiTags('Call')
 @Controller('call')
 export class CallController {
@@ -23,18 +28,30 @@ export class CallController {
 
   @Post()
   async create(@Body() createCallDto: CreateCallDto, @User() user: IUserJwt) {
+
+    const phoneNumber = checkValidPhoneAndTransform(createCallDto.phoneNumber)
+
     const callType = await this.callTypeService.findOne({ _id: createCallDto.type })
     if (!callType)
       throw new BaseException(Errors.BAD_REQUEST("Call type not found"));
 
-    return this.callService.create({ ...createCallDto, type: callType, user: user.data.id || null });
+    return this.callService.create({ ...createCallDto, phoneNumber, type: callType, user: user?.data?._id, source: generateCustomAlphaBet(), status: CallStatus.PENDING });
+  }
+
+  @Put()
+  async updateCall(@Param('id') id: string, @Body() body: UpdateCallDto, @User() user: IUserJwt) {
+    const call = await this.callService.findOne({ id })
+    if (!call)
+      throw new BaseException(Errors.BAD_REQUEST("Call not found"));
+    return this.callService.update(id, body)
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @Roles(UserRole.ADMIN, UserRole.USER)
   @Get()
-  async findAll(@Query() query: any, @User() user: IUserJwt) {
-    const userFound = await this.userService.findOne({ id: user.data.id })
+  async findAll(@Query() query: CallQueryDto, @User() user: IUserJwt) {
+    const userFound = await this.userService.findOne({ _id: user.data._id })
     if (!userFound)
       throw new BaseException(Errors.BAD_REQUEST("User not found"));
 
@@ -78,6 +95,12 @@ export class CallController {
     }
 
     let filter = {}
+    if (user.data.role == UserRole.USER) {
+      filter = {
+        ...filter,
+        phoneNumber: user.data?.phoneNumber
+      }
+    }
     if (query.searchText) {
       filter = {
         ...filter,
@@ -104,10 +127,8 @@ export class CallController {
     }
   }
 
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.callService.findOne({ id });
+    return (await this.callService.findOne({ _id: id })).populate("user");
   }
 }

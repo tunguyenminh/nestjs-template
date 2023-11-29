@@ -21,8 +21,11 @@ export class Call {
     @Prop({ required: false, index: true })
     title?: string;
 
-    @Prop({})
-    recording: string;
+    @Prop({ required: false })
+    videoRecording?: string;
+
+    @Prop({ required: false })
+    audioRecording?: string;
 
     @Prop({
         required: false,
@@ -45,9 +48,36 @@ export class Call {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         index: true,
+        required: false
     })
-    user: User;
+    user?: User;
 
+    @Prop({
+        index: true,
+        required: false
+    })
+    userEmail?: string
+
+    @Prop({
+        index: true,
+        required: false
+    })
+    phoneNumber?: string
+
+    @Prop({
+        index: true,
+        required: true
+    })
+    appointmentDate: Date
 }
 
+
 export const CallSchema = SchemaFactory.createForClass(Call);
+
+CallSchema.index({
+    userEmail: 'text',
+    title: 'text',
+    phoneNumber: 'text',
+    'callType.title': 'text',
+
+});

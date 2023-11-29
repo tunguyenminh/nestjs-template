@@ -6,6 +6,8 @@ import { BackendConfigService } from '../../services/backend-config.service';
 import { IJwtPayload } from '../interfaces/jwt-payload.interface';
 import { BaseException, Errors } from 'src/constants/error.constant';
 import { UserRole, UserStatus } from 'src/constants/enum.constant';
+import { UserService } from 'src/models/user/user.service';
+import mongoose from 'mongoose';
 
 
 // type UserWithoutPassword = Omit<User, 'password'>;
@@ -21,6 +23,7 @@ export interface IUserJwt {
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
+    private readonly userService: UserService,
 
     private readonly configService: BackendConfigService,
   ) {
@@ -40,6 +43,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     //   throw new HttpException('Invalid Access Token', HttpStatus.UNAUTHORIZED);
     // }
 
+    user = await this.userService.findOne({ _id: new mongoose.Types.ObjectId(payload.sub) })
     if (!user) throw new BaseException(Errors.ITEM_NOT_FOUND('Account'));
 
     if (user.userStatus === UserStatus.BANNED) {
@@ -47,6 +51,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     const userExcludePassword = _excludeObject(user, ['password']);
-    return { data: userExcludePassword, role: payload.role };
+    return { data: userExcludePassword, role: user.userRole };
   }
 }

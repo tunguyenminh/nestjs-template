@@ -26,7 +26,6 @@ export class AppService {
       }])
     }
     const admin = await this.userService.findOne({})
-    console.log(admin)
     if (!admin) {
       await this.userService.createMany(
         [

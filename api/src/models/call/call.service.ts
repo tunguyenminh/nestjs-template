@@ -19,11 +19,11 @@ export class CallService {
 
   ) { }
   async create(args: CallFilterDto) {
-    await this.callModel.create({ ...args })
+    return await this.callModel.create({ ...args })
   }
 
   async createMany(args: Array<CallFilterDto>) {
-    await this.callModel.insertMany(args)
+    return await this.callModel.insertMany(args)
   }
 
   async findOne(filter?: CallFilterDto,) {

@@ -5,7 +5,11 @@ import { COMMON_CONSTANT } from 'src/constants/common.constant';
 import { BackendConfigService } from 'src/services/backend-config.service';
 import { RegexConstant } from 'src/constants/regex.constant';
 import { MediaType } from 'src/constants/enum.constant';
+import libphone, { PhoneNumber } from 'google-libphonenumber';
+import { BaseException, Errors } from 'src/constants/error.constant';
 
+import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+const phoneUtil = PhoneNumberUtil.getInstance();
 
 const configService = new BackendConfigService(new ConfigService());
 
@@ -139,4 +143,11 @@ export function filterTransform(filter: any) {
   }
 
   return _filter;
+}
+
+export function checkValidPhoneAndTransform(phone) {
+  const number = phoneUtil.parse(phone, 'VN');
+  if (!phoneUtil.isValidNumber(number))
+    throw new BaseException(Errors.BAD_REQUEST("Phone is not valid"));
+  return phoneUtil.format(number, PhoneNumberFormat.E164);
 }

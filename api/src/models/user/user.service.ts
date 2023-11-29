@@ -14,7 +14,7 @@ export class UserService {
 
   ) { }
   async create(createUserDto: UserFilterDto) {
-    await this.userModel.create({ ...createUserDto })
+    return await this.userModel.create({ ...createUserDto })
   }
 
   async createMany(args: Array<UserFilterDto>) {
