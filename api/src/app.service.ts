@@ -16,57 +16,57 @@ export class AppService {
   ) { }
 
   async onApplicationBootstrap() {
-    // console.log("onApplicationBootstrap")
-    // const callType = await this.callTypeService.findOne({})
-    // if (!callType) {
-    //   await this.callTypeService.createMany([{
-    //     title: "OK",
-    //     status: CallTypeStatus.ACTIVE,
-    //     price: 1000
-    //   }])
-    // }
-    // const admin = await this.userService.findOne({})
-    // console.log(admin)
-    // if (!admin) {
-    //   await this.userService.createMany(
-    //     [
-    //       {
-    //         username: "Admin01",
-    //         userRole: UserRole.ADMIN,
-    //         email: "admin01@gmail.com",
-    //         password: await hash(
-    //           "Admin@123",
-    //           parseInt(this.configService.getEnv('AUTH_SALT_ROUND')),
-    //         )
-    //       },
-    //       {
-    //         username: "Admin02",
-    //         userRole: UserRole.ADMIN,
-    //         email: "admin02@gmail.com",
-    //         password: await hash(
-    //           "Admin@123",
-    //           parseInt(this.configService.getEnv('AUTH_SALT_ROUND')),
-    //         )
-    //       },
-    //       {
-    //         username: "Admin03",
-    //         userRole: UserRole.ADMIN,
-    //         email: "admin03@gmail.com",
-    //         password: await hash(
-    //           "Admin@123",
-    //           parseInt(this.configService.getEnv('AUTH_SALT_ROUND')),
-    //         )
-    //       },
-    //       {
-    //         username: "Admin04",
-    //         userRole: UserRole.ADMIN,
-    //         email: "admin04@gmail.com",
-    //         password: await hash(
-    //           "Admin@123",
-    //           parseInt(this.configService.getEnv('AUTH_SALT_ROUND')),
-    //         )
-    //       }
-    //     ])
-    // }
+    console.log("onApplicationBootstrap")
+    const callType = await this.callTypeService.findOne({})
+    if (!callType) {
+      await this.callTypeService.createMany([{
+        title: "OK",
+        status: CallTypeStatus.ACTIVE,
+        price: 1000
+      }])
+    }
+    const admin = await this.userService.findOne({})
+    console.log(admin)
+    if (!admin) {
+      await this.userService.createMany(
+        [
+          {
+            username: "Admin01",
+            userRole: UserRole.ADMIN,
+            email: "admin01@gmail.com",
+            password: await hash(
+              "Admin@123",
+              parseInt(this.configService.getEnv('AUTH_SALT_ROUND')),
+            )
+          },
+          {
+            username: "Admin02",
+            userRole: UserRole.ADMIN,
+            email: "admin02@gmail.com",
+            password: await hash(
+              "Admin@123",
+              parseInt(this.configService.getEnv('AUTH_SALT_ROUND')),
+            )
+          },
+          {
+            username: "Admin03",
+            userRole: UserRole.ADMIN,
+            email: "admin03@gmail.com",
+            password: await hash(
+              "Admin@123",
+              parseInt(this.configService.getEnv('AUTH_SALT_ROUND')),
+            )
+          },
+          {
+            username: "Admin04",
+            userRole: UserRole.ADMIN,
+            email: "admin04@gmail.com",
+            password: await hash(
+              "Admin@123",
+              parseInt(this.configService.getEnv('AUTH_SALT_ROUND')),
+            )
+          }
+        ])
+    }
   }
 }

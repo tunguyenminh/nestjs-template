@@ -21,6 +21,7 @@ services:
       - "30000:8081"
     depends_on:
       - mongo-db
+
     environment:
       ME_CONFIG_BASICAUTH_USERNAME: ${ME_CONFIG_BASICAUTH_USERNAME}
       ME_CONFIG_BASICAUTH_PASSWORD: ${ME_CONFIG_BASICAUTH_PASSWORD}
@@ -44,13 +45,16 @@ services:
       target: dev # dev environment
     ports:
       - "8687:8686"
-    # restart: always
+    restart: always
+
+    depends_on:
+      - mongo-db
 
     environment:
       PORT: 8686
       MONGO_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGODB_URI: mongodb://mongo-db:27017/call_platform
+      MONGODB_URI: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo-db/call_platform?authSource=admin
       AUTH_SALT_ROUND: 10
       AUTH_JWT_ACCESS_SECRET: bdf8061c8bb12486dc006e7f358c85cfacfc476ecc26e43ace6fca7a9fa9dd2a
       AUTH_ADMIN_JWT_ACCESS_EXPIRES_IN: 365d
