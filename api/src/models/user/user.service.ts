@@ -26,7 +26,7 @@ export class UserService {
   }
 
   async findOneIncludePassword(filter?: UserFilterDto,) {
-    return this.userModel.findOne({ ...filterTransform(filter) }).select("password")
+    return this.userModel.findOne({ ...filterTransform(filter) }).select("+password")
   }
 
   async update(id: string, updateUserDto: any) {
