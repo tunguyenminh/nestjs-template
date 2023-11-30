@@ -1,4 +1,5 @@
 export enum CallStatus {
+    COMPLETED = 'COMPLETED',
     PENDING = 'PENDING',
     ACCEPTED = 'ACCEPTED',
     REJECTED = 'REJECTED',

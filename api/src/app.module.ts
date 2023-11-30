@@ -19,6 +19,7 @@ import { DatabaseModule } from './core/database/database.module';
 import { UserModule } from './models/user/user.module';
 import { CallModule } from './models/call/call.module';
 import { CallTypeModule } from './models/call-type/call-type.module';
+import { WebhookModule } from './webhook/webhook.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { CallTypeModule } from './models/call-type/call-type.module';
     UserModule,
     CallModule,
     CallTypeModule,
+    WebhookModule,
     I18nModule.forRootAsync({
       useFactory: (configService: BackendConfigService) => ({
         fallbackLanguage: configService.getEnv("FALLBACK_LANGUAGE"),
