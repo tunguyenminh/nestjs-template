@@ -47,9 +47,8 @@ export class AuthController {
 
     let payload: IJwtPayload = { sub: user.id, role: user.userRole };
     let accessToken = await this.authService.generateAccessToken(payload);
-    const userExcludePassword = _excludeObject(user, ['password']);
-
-    return { accessToken, user: userExcludePassword }
+    const userFound = await this.userService.findOne({ _id: user._id })
+    return { accessToken, user: userFound }
   }
 
   @Post("register")

@@ -7,7 +7,6 @@ const dbConfig = MongooseModule.forRootAsync({
   imports: [ConfigModule],
   inject: [BackendConfigService],
   useFactory: async (configService: BackendConfigService) => {
-    console.log(configService.getEnv('MONGODB_URI'));
     return {
       uri: configService.getEnv('MONGODB_URI'),
       // auth: {

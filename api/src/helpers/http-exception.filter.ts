@@ -20,7 +20,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     let httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
     let message: string[] = ['Internal server error!'];
-    console.log('exception', exception);
     if (exception instanceof HttpException) {
       httpStatus = exception.getStatus();
       const exceptionResponse = exception.getResponse() || exception.message;
@@ -29,11 +28,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
         exceptionResponse['message'] &&
         exceptionResponse['message'] instanceof Array
       ) {
-        console.log('exception', exception);
         message = exceptionResponse['message'];
       } else {
-        console.log('exception', exception);
-
         message = [
           (exceptionResponse &&
             (exceptionResponse['message'] || exceptionResponse.toString())) ||

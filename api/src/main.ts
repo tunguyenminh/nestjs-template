@@ -45,7 +45,6 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  console.log(configurationCommon().port);
   await app.listen(configurationCommon().port);
 }
 bootstrap();
