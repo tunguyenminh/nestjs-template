@@ -25,6 +25,10 @@ export class CallTypeService {
     return this.callModel.findOne({ ...filterTransform(filter) })
   }
 
+  async findMany(filter?: CallTypeFilterDto,) {
+    return this.callModel.find({ ...filterTransform(filter) })
+  }
+
   async countDocument(filter?: CallTypeFilterDto) {
     return this.callModel.countDocuments({ ...filterTransform(filter) })
   }

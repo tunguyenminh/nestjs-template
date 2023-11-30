@@ -12,7 +12,7 @@ import { BaseException, Errors } from 'src/constants/error.constant';
 import { IJwtPayload } from './interfaces/jwt-payload.interface';
 import { UserRole } from 'src/constants/enum.constant';
 import { RegisterDto } from './dtos/register.dto';
-import { checkValidPhoneAndTransform } from 'src/utils/common.utils';
+import { _excludeObject, checkValidPhoneAndTransform } from 'src/utils/common.utils';
 
 export interface LoginData {
   phone?: string;
@@ -47,8 +47,9 @@ export class AuthController {
 
     let payload: IJwtPayload = { sub: user.id, role: user.userRole };
     let accessToken = await this.authService.generateAccessToken(payload);
+    const userExcludePassword = _excludeObject(user, ['password']);
 
-    return { accessToken }
+    return { accessToken, user: userExcludePassword }
   }
 
   @Post("register")
@@ -72,7 +73,7 @@ export class AuthController {
     let payload: IJwtPayload = { sub: user.id, role: user.userRole };
 
     let accessToken = await this.authService.generateAccessToken(payload);
-    return { accessToken }
+    return { accessToken, user }
   }
 
 

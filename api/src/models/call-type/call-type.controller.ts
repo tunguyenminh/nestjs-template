@@ -14,7 +14,6 @@ export class CallTypeController {
 
   @Get()
   async getList() {
-    return this.callTypeService.findOne({ status: { $ne: CallTypeStatus.DELETED } })
+    return this.callTypeService.findMany({ status: { $ne: CallTypeStatus.DELETED } })
   }
-
 }
