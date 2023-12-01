@@ -16,6 +16,7 @@ import { CallQueryDto } from './dto/call-query.dto';
 import { checkValidPhoneAndTransform, generateCustomAlphaBet } from 'src/utils/common.utils';
 import { CallStatus } from './call.enum';
 import { UpdateCallDto } from './dto/update-call.dto';
+import moment from 'moment';
 
 @ApiTags('Call')
 @Controller('call')
@@ -35,7 +36,7 @@ export class CallController {
     if (!callType)
       throw new BaseException(Errors.BAD_REQUEST("Call type not found"));
 
-    return this.callService.create({ ...createCallDto, phoneNumber, type: callType, user: user?.data?._id, source: generateCustomAlphaBet(), status: CallStatus.PENDING });
+    return this.callService.create({ ...createCallDto, phoneNumber, type: callType, user: user?.data?._id, source: generateCustomAlphaBet(), status: CallStatus.PENDING, totalMinute: callType.value, minuteLeft: callType.value });
   }
 
   @Put()
@@ -101,13 +102,27 @@ export class CallController {
         phoneNumber: user.data?.phoneNumber
       }
     }
+
     if (query.searchText) {
       filter = {
         ...filter,
         name: new RegExp(query.searchText, 'i'),
       };
     }
-
+    if (
+      query.startDate &&
+      moment(query.startDate).isValid() &&
+      query.endDate &&
+      moment(query.endDate).isValid()
+    ) {
+      filter = {
+        ...filter,
+        appointmentDate: {
+          $gte: new Date(moment(query.startDate).startOf('date').toISOString()),
+          $lt: new Date(moment(query.endDate).endOf('date').toISOString()),
+        },
+      };
+    }
     const totalCall = await this.callService.countDocument(filter)
     const totalPage = Math.ceil(totalCall / pageSize);
     const callList =

@@ -34,11 +34,11 @@ export class CallService {
     return this.callModel.countDocuments({ ...filterTransform(filter) })
   }
 
-  async update(id: string, updateUserDto: any) {
+  async update(id: string, dto: any) {
     const updatedDoc = await this.callModel.findByIdAndUpdate(
       id,
       {
-        $set: updateUserDto,
+        $set: dto,
       },
       { new: true },
     );
@@ -60,7 +60,6 @@ export class CallService {
         .sort({ ...(sort || { createdAt: -1 }) })
         .skip((page - 1) * pageSize)
         .limit(pageSize)
-        .populate('call')
     ).map((item) => item.toObject());
   }
 }

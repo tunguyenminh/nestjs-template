@@ -23,6 +23,9 @@ export class CallType {
     @Prop({ required: false, index: true, default: 10 })
     price?: number;
 
+    @Prop({ required: true, index: true, default: 30 })
+    value: 30
+
     @Prop({
         required: true,
         index: true,

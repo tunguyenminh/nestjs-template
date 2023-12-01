@@ -74,4 +74,20 @@ export class CallQueryDto {
     @IsOptional()
     @IsString()
     readonly searchText?: string;
+
+    @ApiProperty({
+        example: '2022-10-31T09:41:13.415Z',
+        required: false,
+    })
+    @IsString()
+    @IsOptional()
+    readonly startDate?: string;
+
+    @ApiProperty({
+        example: '2022-10-31T09:41:13.415Z',
+        required: false,
+    })
+    @IsString()
+    @IsOptional()
+    readonly endDate?: string;
 }

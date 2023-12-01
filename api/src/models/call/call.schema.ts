@@ -69,6 +69,42 @@ export class Call {
         required: true
     })
     appointmentDate: Date
+
+    @Prop({
+        index: true,
+        required: true,
+        default: 60
+    })
+    minuteLeft: number
+
+    @Prop({
+        index: true,
+        required: true
+    })
+    totalMinute: number
+
+    @Prop({
+        required: true,
+        default: false
+    })
+    isStarted: boolean
+
+    @Prop({
+        required: true,
+        default: false
+    })
+    isCalling: boolean
+
+    @Prop({
+        required: false,
+    })
+    startTime?: Date
+
+    @Prop({
+        required: false,
+    })
+    endTime?: Date
+
 }
 
 

@@ -4,7 +4,7 @@ import { LoginMethod, SocialConnectionType, UserRole } from 'src/constants/enum.
 import { OtpAction } from 'src/constants/otp-action.constant';
 export class LoginDto {
   @ApiProperty({
-    example: 'abcdef',
+    example: 'Admin01',
     required: true
   })
   @IsString()
@@ -12,7 +12,7 @@ export class LoginDto {
   readonly username: string;
 
   @ApiProperty({
-    example: 'abcdef',
+    example: 'Admin@123',
     required: true
   })
   @IsString()
