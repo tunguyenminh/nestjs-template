@@ -39,7 +39,7 @@ export class CallController {
     return this.callService.create({ ...createCallDto, phoneNumber, type: callType, user: user?.data?._id, source: generateCustomAlphaBet(), status: CallStatus.PENDING, totalMinute: callType.value, minuteLeft: callType.value });
   }
 
-  @Put()
+  @Put("id")
   async updateCall(@Param('id') id: string, @Body() body: UpdateCallDto, @User() user: IUserJwt) {
     const call = await this.callService.findOne({ id })
     if (!call)
