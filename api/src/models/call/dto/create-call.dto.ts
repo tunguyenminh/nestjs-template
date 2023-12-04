@@ -7,7 +7,6 @@ export class CreateCallDto {
     })
     @IsString()
     @IsNotEmpty()
-    @NotContains(' ')
     readonly title: string;
 
     @ApiProperty({
