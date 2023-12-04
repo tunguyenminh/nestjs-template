@@ -44,6 +44,14 @@ export class CallController {
     const call = await this.callService.findOne({ _id: id })
     if (!call)
       throw new BaseException(Errors.BAD_REQUEST("Call not found"));
+    if (body.type) {
+
+      const callType = await this.callTypeService.findOne({ _id: body.type })
+      let { type, ...args } = body
+      if (!callType)
+        throw new BaseException(Errors.BAD_REQUEST("Call type not found"));
+      return this.callService.update(id, { ...args, type: callType })
+    }
     return this.callService.update(id, body)
   }
 
