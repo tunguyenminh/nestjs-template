@@ -41,7 +41,7 @@ export class CallController {
 
   @Put(":id")
   async updateCall(@Param('id') id: string, @Body() body: UpdateCallDto, @User() user: IUserJwt) {
-    const call = await this.callService.findOne({ id })
+    const call = await this.callService.findOne({ _id: id })
     if (!call)
       throw new BaseException(Errors.BAD_REQUEST("Call not found"));
     return this.callService.update(id, body)
@@ -145,5 +145,12 @@ export class CallController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return (await this.callService.findOne({ _id: id })).populate("user");
+  }
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Roles(UserRole.ADMIN)
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return await this.callService.update(id, { status: CallStatus.DELETED })
   }
 }
