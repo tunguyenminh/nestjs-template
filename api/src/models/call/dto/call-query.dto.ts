@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { Min, IsNumber, IsOptional, Max, IsString, NotContains, IsEnum } from "class-validator";
+import { Min, IsNumber, IsOptional, Max, IsString, NotContains, IsEnum, IsBoolean } from "class-validator";
 import { PagingDto } from "src/base/base.model";
 import { FilterOptions } from "src/base/filterOption.dto";
 import { CallStatus } from "../call.enum";
@@ -74,6 +74,15 @@ export class CallQueryDto {
     @IsOptional()
     @IsString()
     readonly searchText?: string;
+
+    @ApiProperty({
+        example: 1,
+        required: false,
+    })
+    @Type(() => Number)
+    @IsOptional()
+    @IsNumber()
+    readonly isCalling?: number;
 
     @ApiProperty({
         example: '2022-10-31T09:41:13.415Z',

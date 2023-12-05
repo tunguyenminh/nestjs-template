@@ -117,6 +117,22 @@ export class CallController {
         name: new RegExp(query.searchText, 'i'),
       };
     }
+
+    if (query.isCalling) {
+      if (query.isCalling == 1) {
+        filter = {
+          ...filter,
+          isCalling: true
+        }
+      }
+      else {
+        filter = {
+          ...filter,
+          isCalling: false
+        }
+      }
+    }
+
     if (
       query.startDate &&
       moment(query.startDate).isValid() &&
