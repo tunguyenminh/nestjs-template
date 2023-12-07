@@ -23,7 +23,7 @@ export class WebhookController {
   async createdRoomWebhookEvent(
     @Body() body: WebhookEventCreateRoom,
   ) {
-    const call = await this.callService.findOne({ _id: body.room_jid, status: CallStatus.ACCEPTED })
+    const call = await this.callService.findOne({ _id: body.room_name, status: CallStatus.ACCEPTED })
 
     if (call) {
       await this.callService.update(call.id, {
@@ -49,7 +49,7 @@ export class WebhookController {
   async destroyedRoomWebhookEvent(
     @Body() body: WebhookEventDestroyedRoom,
   ) {
-    const call = await this.callService.findOne({ _id: body.room_jid, status: CallStatus.ACCEPTED })
+    const call = await this.callService.findOne({ _id: body.room_name, status: CallStatus.ACCEPTED })
     if (call) {
       await this.callService.update(call.id, {
         isCalling: false,
@@ -66,7 +66,7 @@ export class WebhookController {
   async leftRoomWebhookEvent(
     @Body() body: WebhookEventLeftRoom,
   ) {
-    const call = await this.callService.findOne({ _id: body.room_jid, status: CallStatus.ACCEPTED })
+    const call = await this.callService.findOne({ _id: body.room_name, status: CallStatus.ACCEPTED })
     if (call) {
       const callMinutes = body.occupant.left_at - body.occupant.left_at
       await this.callService.update(call.id, {
