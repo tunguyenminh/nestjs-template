@@ -50,7 +50,11 @@ export class CallController {
       let { type, ...args } = body
       if (!callType)
         throw new BaseException(Errors.BAD_REQUEST("Call type not found"));
-      return this.callService.update(id, { ...args, type: callType })
+      return this.callService.update(id, {
+        ...args, type: callType,
+        totalMinute: callType.value,
+        minuteLeft: callType.value
+      })
     }
     return this.callService.update(id, body)
   }
@@ -155,7 +159,6 @@ export class CallController {
         },
       };
     }
-    console.log(filter)
     const totalCall = await this.callService.countDocument(filter)
     const totalPage = Math.ceil(totalCall / pageSize);
     const callList =
