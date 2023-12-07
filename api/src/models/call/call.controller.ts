@@ -185,7 +185,7 @@ export class CallController {
 
   @Post('join-call')
   async joinCall(@Body() body: JoinCallDto) {
-    const call = (await this.callService.findOne({ _id: body.callId, $or: [{ userEmail: body.username }, { phoneNumber: body.username }] })).populate("user")
+    const call = await this.callService.findOne({ _id: body.callId, $or: [{ userEmail: body.username }, { phoneNumber: body.username }] })
     if (!call) throw new BaseException(Errors.BAD_REQUEST("Call not found"))
     return call
   }
