@@ -115,5 +115,7 @@ CallSchema.index({
     title: 'text',
     phoneNumber: 'text',
     'callType.title': 'text',
-
+    'user.username': 'text',
+    'user.email': 'text',
+    'user.phoneNumber': 'text',
 });

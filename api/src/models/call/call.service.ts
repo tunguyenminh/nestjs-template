@@ -57,6 +57,7 @@ export class CallService {
           ...filterTransform(filter),
           status: { $ne: CallStatus.DELETED },
         })
+        .populate("user")
         .sort({ ...(sort || { createdAt: -1 }) })
         .skip((page - 1) * pageSize)
         .limit(pageSize)

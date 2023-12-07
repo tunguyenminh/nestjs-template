@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Put } from '@nestjs/common';
 import { CallService } from './call.service';
-import { CreateCallDto } from './dto/create-call.dto';
+import { CreateCallDto, JoinCallDto } from './dto/create-call.dto';
 import { UserRole } from 'src/constants/enum.constant';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -114,8 +114,16 @@ export class CallController {
     if (query.searchText) {
       filter = {
         ...filter,
-        name: new RegExp(query.searchText, 'i'),
-      };
+        $or: [
+          { phoneNumber: new RegExp(query.searchText, 'gi') },
+          { userEmail: new RegExp(query.searchText, 'gi') },
+          { title: new RegExp(query.searchText, 'gi') },
+          { 'user.username': new RegExp(query.searchText, 'gi') },
+          { 'callType.title': new RegExp(query.searchText, 'gi') },
+          { 'user.phoneNumber': new RegExp(query.searchText, 'gi') },
+          { 'user.email': new RegExp(query.searchText, 'gi') },
+        ]
+      }
     }
 
     if (query.isCalling) {
@@ -147,6 +155,7 @@ export class CallController {
         },
       };
     }
+    console.log(filter)
     const totalCall = await this.callService.countDocument(filter)
     const totalPage = Math.ceil(totalCall / pageSize);
     const callList =
@@ -170,6 +179,15 @@ export class CallController {
   async findOne(@Param('id') id: string) {
     return (await this.callService.findOne({ _id: id })).populate("user");
   }
+
+  @Get(':id')
+  async joinCall(@Body() body: JoinCallDto) {
+    const call = (await this.callService.findOne({ _id: body.callId, $or: [{ userEmail: body.username }, { phoneNumber: body.username }] })).populate("user")
+    if (!call) throw new BaseException(Errors.BAD_REQUEST("Call not found"))
+    return call
+  }
+
+
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Roles(UserRole.ADMIN)

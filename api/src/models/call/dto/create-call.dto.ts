@@ -42,3 +42,19 @@ export class CreateCallDto {
     @IsOptional()
     readonly appointmentDate?: string;
 }
+
+export class JoinCallDto {
+    @ApiProperty({
+        example: 'id',
+    })
+    @IsString()
+    @IsNotEmpty()
+    readonly callId: string;
+
+    @ApiProperty({
+        example: 'id',
+    })
+    @IsString()
+    @IsNotEmpty()
+    readonly username: string;
+}
