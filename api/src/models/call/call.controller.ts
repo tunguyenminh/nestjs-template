@@ -187,8 +187,8 @@ export class CallController {
   async joinCall(@Body() body: JoinCallDto) {
     const call = await this.callService.findOne({ _id: body.callId, $or: [{ userEmail: body.username }, { phoneNumber: body.username }] })
     if (!call) throw new BaseException(Errors.BAD_REQUEST("Call not found"))
-    // if (call.minuteLeft = 0) throw new BaseException(Errors.BAD_REQUEST("Your time has ended"))
-    // if (moment(call.appointmentDate).isBefore(moment())) throw new BaseException(Errors.BAD_REQUEST("It's not time to start yet"))
+    if (call.minuteLeft = 0) throw new BaseException(Errors.BAD_REQUEST("Your time has ended"))
+    if (moment(call.appointmentDate).isAfter(moment())) throw new BaseException(Errors.BAD_REQUEST("It's not time to start yet"))
     return call
   }
 
