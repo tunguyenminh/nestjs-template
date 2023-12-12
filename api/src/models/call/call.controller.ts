@@ -192,8 +192,6 @@ export class CallController {
     return call
   }
 
-
-
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Roles(UserRole.ADMIN)
